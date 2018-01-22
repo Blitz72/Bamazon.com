@@ -14,7 +14,7 @@ function mainMenu() {
     {
       type: "list",
       message: "What would you like to do today at bamazon.com?",
-      choices: ["View all products", "Search by department", "Search by price range", "Exit"],
+      choices: ["View all products", "Search by department", "Search by keyword", "Search by price range", "Exit"],
       name: "menuChoice"
     }
   ])
@@ -25,6 +25,9 @@ function mainMenu() {
         break;
       case "Search by department":
         searchDepartment();
+        break;
+      case "Search by keyword":
+        searchKeyword();
         break;
       case "Search by price range":
         searchPriceRange();
@@ -74,8 +77,27 @@ function searchDepartment() {
       if (err) throw err;
       renderProducts(res);
       mainOrBuy();
-    });
-    
+    });   
+  });
+}
+
+function searchKeyword() {
+  inquirer
+  .prompt([
+    {
+      type: "input",
+      message: "Enter keyword to search with: ",
+      name: "keyword"
+    }
+  ])
+  .then(function(inquirerResponse) {
+    connection.query("SELECT * FROM products WHERE product_name LIKE '%" + 
+                      inquirerResponse.keyword + "%' OR description LIKE '%" + 
+                      inquirerResponse.keyword + "%'", function(err, res) {
+      if (err) throw err;
+      renderProducts(res);
+      mainOrBuy();
+    });  
   });
 }
 
