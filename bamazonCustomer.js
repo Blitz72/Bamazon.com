@@ -95,7 +95,8 @@ function searchKeyword() {
                       inquirerResponse.keyword + "%' OR description LIKE '%" + 
                       inquirerResponse.keyword + "%'", function(err, res) {
       if (err) throw err;
-      renderProducts(res);
+      if (!res[0]) console.log("\nNo products matched your search criteria.\n");
+      else renderProducts(res);
       mainOrBuy();
     });  
   });
@@ -120,7 +121,8 @@ function searchPriceRange() {
     var high = inquirerResponsse.highPrice;
     connection.query("SELECT * FROM products WHERE price BETWEEN " + low + " AND " + high, function(err, res) {
       if (err) throw err;
-      renderProducts(res);
+      if (!res[0]) console.log("\nNo products matched your search criteria.\n");
+      else renderProducts(res);
       mainOrBuy();
     });
     
