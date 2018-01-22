@@ -1,0 +1,29 @@
+{
+  "name": "bamazon.com",
+  "version": "1.0.0",
+  "description": "All your shopping needs fulfilled with more than just a smile!",
+  "main": "bamazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Blitz72/Bamazon.com.git"
+  },
+  "keywords": [
+    "node",
+    "shopping",
+    "inquirer"
+  ],
+  "author": "David Bauer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Blitz72/Bamazon.com/issues"
+  },
+  "homepage": "https://github.com/Blitz72/Bamazon.com#readme",
+  "dependencies": {
+    "dotenv": "^4.0.0",
+    "inquirer": "^5.0.0",
+    "mysql": "^2.15.0"
+  }
+}
