@@ -46,7 +46,6 @@ function viewAll() {
     renderProducts(res);
     mainOrBuy();
   });
-  
 }
 
 function searchDepartment() {
@@ -174,6 +173,8 @@ function buyProduct() {
       if (res[0].stock_quantity >= inquirerResponse.quantity) {
         var newQuantity = res[0].stock_quantity - inquirerResponse.quantity;
         console.log("Your purchase for " + inquirerResponse.quantity + " " + res[0].product_name + "(s) is being filled.");
+        var sale = (res[0].price * inquirerResponse.quantity).toFixed(2);
+        console.log("One click ordering has charged your card for $" + sale);
         updateProduct(newQuantity, inquirerResponse.productID, res[0].product_name);
       } else {
         console.log("Insufficient Quantity.");
@@ -185,7 +186,7 @@ function buyProduct() {
 }
 
 function updateProduct(newQuantity, productID, productName) {
-  var query = connection.query(
+  connection.query(
     "UPDATE products SET ? WHERE ?",
     [
       {
