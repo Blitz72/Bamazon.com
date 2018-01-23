@@ -8,6 +8,20 @@ var connection = mysql.createConnection(
 	keys.mysqlKeys
 );
 
+var departments = [];
+
+function listDepartments() {
+  connection.query("SELECT DISTINCT department_name FROM products", function(err, res) {
+    if (err) throw err;
+    for (var i = 0; i < res.length; i++) {
+      // console.log(res[i].department_name)
+      departments.push(res[i].department_name);
+    }
+    // console.log("departments: ", departments);
+  });
+  // console.log("departments: ", departments);
+}
+
 function mainMenu() {
   inquirer
   .prompt([
@@ -111,8 +125,9 @@ function addNewProduct() {
       name: "description"
     },
     {
-      type: "input",
+      type: "list",
       message: "Enter the department for the new product: ",
+      choices: departments,
       name: "department"
     },
     {
@@ -125,16 +140,30 @@ function addNewProduct() {
       message: "Enter the initial quantity of the new product: ",
       name: "quantity"
     },
+    {
+      type: "confirm",
+      message: "Are you sure you want to add this new product?: ",
+      name: "confirm",
+      default: false
+    }
 	])
 	.then(function(inquirerResponse) {
-		connection.query("INSERT INTO products (product_name, description, department_name, price, stock_quantity) VALUES (" +
+		if (inquirerResponse.confirm) {
+			connection.query("INSERT INTO products (product_name, description, department_name, price, stock_quantity) VALUES (" +
 											"'" + inquirerResponse.productName + "', " +
 											"'" + inquirerResponse.description + "', " +
 											"'" + inquirerResponse.department + "', " +
 											"'" + inquirerResponse.price + "', " +
-											"'" + inquirerResponse.quantity + "');");
-		console.log("\nNew product added!\n");
-		mainMenu();
+											"'" + inquirerResponse.quantity + "');",
+			function(err, res) {
+				if (err) throw err;
+				console.log("\nNew product added!\n");
+				mainMenu();
+			});
+		} else {
+			console.log("\nProduct has not been added.\n");
+			mainMenu();
+		}
 	});
 }
 
@@ -148,4 +177,5 @@ function renderProducts(data) {
   console.log("\n");
 }
 
+listDepartments();
 mainMenu();

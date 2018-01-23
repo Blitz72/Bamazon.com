@@ -8,7 +8,25 @@ var connection = mysql.createConnection(
 	keys.mysqlKeys
 );
 
+// var departments = ["Toys/Hobbies", "Electronics", "Outdoors", "Men's Clothing", "Women's Clothing",
+//                     "Industrial/Scientific", "Kindling Books"];
+
+var departments = [];  //might need module "promise-mysql"
+
+function listDepartments() {
+  connection.query("SELECT DISTINCT department_name FROM products", function(err, res) {
+    if (err) throw err;
+    for (var i = 0; i < res.length; i++) {
+      // console.log(res[i].department_name)
+      departments.push(res[i].department_name);
+    }
+    // console.log("departments: ", departments);
+  });
+  // console.log("departments: ", departments);
+}
+
 function mainMenu() {
+  console.log("departmentsMainMenu: ", departments);
   inquirer
   .prompt([
     {
@@ -49,24 +67,12 @@ function viewAll() {
 }
 
 function searchDepartment() {
-  // var departments = [];  //might need module "promise-mysql"
-  // connection.query("SELECT DISTINCT department_name FROM products", function(err, res) {
-  //   if (err) throw err;
-  //   for (var i = 0; i < res.length; i++) {
-  //     console.log(res[i].department_name)
-  //     departments.push(res[i].department_name);
-  //   }
-  //   console.log("Departments: ", departments);
-  //   connection.end();
-  // });
-  // console.log("Departments: ", departments);
   inquirer
   .prompt([
     {
       type: "list",
       message: "In which department would you like to search?",
-      choices: ["Toys/Hobbies", "Electronics", "Men's Clothing", "Women's Clothing", "Outdoors",
-                "Industrial/Scientific", "Kindling Books"],
+      choices: departments,
       name: "departmentChoice"
     }
   ])
@@ -214,4 +220,5 @@ function renderProducts(data) {
   console.log("\n");
 }
 
+listDepartments();
 mainMenu();
