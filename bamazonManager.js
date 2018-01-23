@@ -148,4 +148,5 @@ function renderProducts(data) {
   console.log("\n");
 }
 
+//Start the app ath the main menu
 mainMenu();
