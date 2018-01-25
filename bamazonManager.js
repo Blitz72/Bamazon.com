@@ -86,7 +86,7 @@ function addInventory() {
     }
 	])
 	.then(function(inquirerResponse) {
-		connection.query("SELECT * FROM products WHERE item_id = " + inquirerResponse.productID, function(err, res) {
+		connection.query("SELECT * FROM products WHERE item_id = " + parseInt(inquirerResponse.productID), function(err, res) {
 			var newQuantity = parseInt(res[0].stock_quantity) + parseInt(inquirerResponse.quantity);
 			updateProduct(newQuantity, inquirerResponse.quantity, inquirerResponse.productID, res[0].product_name);
 	  });
