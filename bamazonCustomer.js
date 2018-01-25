@@ -128,11 +128,29 @@ function searchPriceRange() {
       type: "input",
       message: "Enter the lowest price to search with: ",
       name: "lowPrice",
+      validate: function(input) {
+        var done = this.async();
+        input = parseInt(input);
+        if (input !== parseFloat(input, 10)) {
+          done("Please enter a valid number.");
+          return;
+        }
+        done(null, true);
+      }
     },
     {
       type: "input",
       message: "Enter the highest price to search with: ",
-      name: "highPrice"
+      name: "highPrice",
+      validate: function(input) {
+        var done = this.async();
+        input = parseInt(input);
+        if (input !== parseFloat(input, 10)) {
+          done("Please enter a valid number.");
+          return;
+        }
+        done(null, true);
+      }
     }
   ])
   .then(function(inquirerResponsse) {

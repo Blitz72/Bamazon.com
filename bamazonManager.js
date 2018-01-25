@@ -10,6 +10,7 @@ var connection = mysql.createConnection(
 
 var depts = [];  //might need module "promise-mysql"
                   //UPDATE: Running listDepartments() before mainMenu() seems to work
+var prods = [];
 
 function listDepartments() {
   connection.query("SELECT department_name FROM departments", function(err, res) {
@@ -17,6 +18,18 @@ function listDepartments() {
     for (var i = 0; i < res.length; i++) {
       // console.log(res[i].department_name)
       depts.push(res[i].department_name);
+    }
+    // console.log("depts: ", depts);
+  });
+  // console.log("depts: ", depts);
+}
+
+function listProductIds() {
+  connection.query("SELECT item_id FROM products", function(err, res) {
+    if (err) throw err;
+    for (var i = 0; i < res.length; i++) {
+      // console.log(res[i].department_name)
+      prods.push(res[i].item_id);
     }
     // console.log("depts: ", depts);
   });
@@ -77,12 +90,29 @@ function addInventory() {
 		{
       type: "input",
       message: "Enter the id of the product you would like to add to inventory: ",
-      name: "productID"
+      name: "productID",
+      validate: function(input) {
+        var done = this.async();
+        if (prods.indexOf(parseInt(input)) < 0) {
+          done("Please enter a valid product ID.");
+          return;
+        }
+        done(null, true);
+      }
     },
     {
       type: "input",
       message: "Enter the quantity of the item you would like to add to inventory: ",
-      name: "quantity"
+      name: "quantity",
+      validate: function(input) {
+        var done = this.async();
+        input = parseInt(input);
+        if (input !== parseInt(input, 10)) {
+          done("Please enter a valid quantity.");
+          return;
+        }
+        done(null, true);
+      }
     }
 	])
 	.then(function(inquirerResponse) {
@@ -178,5 +208,6 @@ function renderProducts(data) {
   console.log("\n");
 }
 
+listProductIds();
 listDepartments();  //Run listDepartments to populate the choices for departments before mainMenu
 mainMenu();

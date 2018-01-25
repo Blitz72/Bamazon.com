@@ -81,7 +81,16 @@ function newDepartment() {
     {
       type: "input",
       message: "Enter in the overhead costs for the department: ",
-      name: "costs"
+      name: "costs",
+      validate: function(input) {
+        var done = this.async();
+        input = parseInt(input);
+        if (input !== parseFloat(input, 10)) {
+          done("Please enter a valid number.");
+          return;
+        }
+        done(null, true);
+      }
     },
     {
       type: "confirm",
