@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/Blitz72/Bamazon.com#readme",
   "dependencies": {
+    "cli-table": "^0.3.1",
     "dotenv": "^4.0.0",
     "inquirer": "^5.0.0",
     "mysql": "^2.15.0"

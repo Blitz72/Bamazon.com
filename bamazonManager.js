@@ -8,18 +8,19 @@ var connection = mysql.createConnection(
 	keys.mysqlKeys
 );
 
-var departments = [];
+var depts = [];  //might need module "promise-mysql"
+                  //UPDATE: Running listDepartments() before mainMenu() seems to work
 
 function listDepartments() {
-  connection.query("SELECT DISTINCT department_name FROM products", function(err, res) {
+  connection.query("SELECT department_name FROM departments", function(err, res) {
     if (err) throw err;
     for (var i = 0; i < res.length; i++) {
       // console.log(res[i].department_name)
-      departments.push(res[i].department_name);
+      depts.push(res[i].department_name);
     }
-    // console.log("departments: ", departments);
+    // console.log("depts: ", depts);
   });
-  // console.log("departments: ", departments);
+  // console.log("depts: ", depts);
 }
 
 function mainMenu() {
@@ -105,7 +106,7 @@ function updateProduct(newQuantity, quantityAdded, productID, productName) {
     ],
     function(err, res) {
       if (err) throw err;
-      console.log("\n" + quantityAdded + " items add to stock for " + productName + ".\n");
+      console.log("\n" + quantityAdded + " item(s) add to stock for " + productName + ".\n");
       mainMenu();
     }
   );
@@ -127,7 +128,7 @@ function addNewProduct() {
     {
       type: "list",
       message: "Enter the department for the new product: ",
-      choices: departments,
+      choices: depts,
       name: "department"
     },
     {
@@ -177,5 +178,5 @@ function renderProducts(data) {
   console.log("\n");
 }
 
-listDepartments();
+listDepartments();  //Run listDepartments to populate the choices for departments before mainMenu
 mainMenu();

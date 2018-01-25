@@ -9,7 +9,15 @@ CREATE TABLE products (
     product_name VARCHAR(50) NOT NULL,
     description VARCHAR(100) NULL,
     department_name VARCHAR(50) NOT NULL,
-    price DECIMAL(10 , 2 ) NOT NULL DEFAULT 0.00,
+    price DECIMAL(10 , 2) NOT NULL,
     stock_quantity INTEGER NULL DEFAULT 0,
+    product_sales DECIMAL(20 , 2) NULL DEFAULT 0.00,
     PRIMARY KEY (item_id)
+);
+
+CREATE TABLE departments (
+    department_id INTEGER(7) NOT NULL AUTO_INCREMENT,
+    department_name VARCHAR(50) NOT NULL,
+    over_head_costs DECIMAL(20, 2) NULL DEFAULT 0.00,
+    PRIMARY KEY (department_id)
 );

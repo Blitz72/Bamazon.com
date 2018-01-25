@@ -11,22 +11,36 @@ var connection = mysql.createConnection(
 // var departments = ["Toys/Hobbies", "Electronics", "Outdoors", "Men's Clothing", "Women's Clothing",
 //                     "Industrial/Scientific", "Kindling Books"];
 
-var departments = [];  //might need module "promise-mysql"
+var depts = [];  //might need module "promise-mysql"
+var prods = [];
 
 function listDepartments() {
-  connection.query("SELECT DISTINCT department_name FROM products", function(err, res) {
+  connection.query("SELECT department_name FROM departments", function(err, res) {
     if (err) throw err;
     for (var i = 0; i < res.length; i++) {
       // console.log(res[i].department_name)
-      departments.push(res[i].department_name);
+      depts.push(res[i].department_name);
     }
-    // console.log("departments: ", departments);
+    // console.log("depts: ", depts);
   });
-  // console.log("departments: ", departments);
+  // console.log("depts: ", depts);
+}
+
+function listProductIds() {
+  connection.query("SELECT item_id FROM products", function(err, res) {
+    if (err) throw err;
+    for (var i = 0; i < res.length; i++) {
+      // console.log(res[i].department_name)
+      prods.push(res[i].item_id);
+    }
+    // console.log("depts: ", depts);
+  });
+  // console.log("depts: ", depts);
 }
 
 function mainMenu() {
-  console.log("departmentsMainMenu: ", departments);
+  // console.log("prods: ", prods);
+  // console.log("departmentsMainMenu: ", depts);
   inquirer
   .prompt([
     {
@@ -72,7 +86,7 @@ function searchDepartment() {
     {
       type: "list",
       message: "In which department would you like to search?",
-      choices: departments,
+      choices: depts,
       name: "departmentChoice"
     }
   ])
@@ -113,7 +127,7 @@ function searchPriceRange() {
     {
       type: "input",
       message: "Enter the lowest price to search with: ",
-      name: "lowPrice"
+      name: "lowPrice",
     },
     {
       type: "input",
@@ -162,7 +176,15 @@ function buyProduct() {
     {
       type: "input",
       message: "Enter the id of the product you would like to purchase: ",
-      name: "productID"
+      name: "productID",
+      validate: function(input) {
+        var done = this.async();
+        if (prods.indexOf(parseInt(input)) < 0) {
+          done("Please enter a valid product ID.");
+           return;
+        }
+        done(null, true);
+      }
     },
     {
       type: "input",
@@ -176,17 +198,18 @@ function buyProduct() {
       console.log("\nSupplier stock: ", res[0].stock_quantity);
       console.log("Quantity requested: ", inquirerResponse.quantity + "\n");
       if (err) throw err;
-      if (res[0].stock_quantity >= inquirerResponse.quantity) {
+      if (parseInt(res[0].stock_quantity) >= parseInt(inquirerResponse.quantity)) {
         var newQuantity = res[0].stock_quantity - inquirerResponse.quantity;
         console.log("Your purchase for " + inquirerResponse.quantity + " " + res[0].product_name + "(s) is being filled.");
-        var sale = (res[0].price * inquirerResponse.quantity).toFixed(2);
+        var sale = res[0].price.toFixed(2) * parseInt(inquirerResponse.quantity);
         console.log("One click ordering has charged your card for $" + sale);
         updateProduct(newQuantity, inquirerResponse.productID, res[0].product_name);
+        var newSale = res[0].product_sales + sale;
+        updateSales(newSale, inquirerResponse.productID, res[0].product_name);
       } else {
         console.log("Insufficient Quantity.");
         mainOrBuy();
       }
-      
     });
   });
 }
@@ -205,6 +228,25 @@ function updateProduct(newQuantity, productID, productName) {
     function(err, res) {
       if (err) throw err;
       console.log("\nQuantity updated for " + productName + ".\n");
+      // mainOrBuy();
+    }
+  );
+}
+
+function updateSales(sale, productID, productName) {
+  connection.query(
+    "UPDATE products SET ? WHERE ?",
+    [
+      {
+        product_sales: sale
+      },
+      {
+        item_id: productID
+      }
+    ],
+    function(err, res) {
+      if (err) throw err;
+      console.log("Product sales updated for " + productName + ".\n");
       mainOrBuy();
     }
   );
@@ -220,5 +262,6 @@ function renderProducts(data) {
   console.log("\n");
 }
 
-listDepartments();
+listProductIds();
+listDepartments();  //Run listDepartments to populate the choices for departments before mainMenu
 mainMenu();
