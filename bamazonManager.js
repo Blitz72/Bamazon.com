@@ -202,7 +202,7 @@ function addNewProduct() {
 function renderProducts(data) {
   var table = new Table({
     head: ['ID', 'Product', 'Description', 'Price', 'Quantity', 'Department'],
-    colWidths: [6, 30, 55, 10, 10, 25]
+    colWidths: [8, 30, 55, 13, 8, 23]
   });
   for (var i = 0; i < data.length; i++) {
     var price = "$" + data[i].price.toFixed(2);

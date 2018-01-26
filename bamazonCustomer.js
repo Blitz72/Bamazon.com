@@ -14,11 +14,6 @@ var connection = mysql.createConnection(
 	keys.mysqlKeys
   );
 
-// connection.connect(function(err) {
-//   if (err) throw err;
-//   console.log("connected as id " + connection.threadId + "\n");
-// });
-
 // var departments = ["Toys/Hobbies", "Electronics", "Outdoors", "Men's Clothing", "Women's Clothing",
 //                     "Industrial/Scientific", "Kindling Books"];
 
@@ -232,12 +227,12 @@ function buyProduct() {
         var newQuantity = res[0].stock_quantity - inquirerResponse.quantity;
         console.log("Your purchase for " + inquirerResponse.quantity + " " + res[0].product_name + "(s) is being filled.");
         var sale = res[0].price.toFixed(2) * parseInt(inquirerResponse.quantity);
-        console.log("One click ordering has charged your card for $" + sale);
+        console.log("One click ordering has charged your card for $" + sale.toFixed(2));
         updateProduct(newQuantity, inquirerResponse.productID, res[0].product_name);
         var newSale = res[0].product_sales + sale;
         updateSales(newSale, inquirerResponse.productID, res[0].product_name);
       } else {
-        console.log("Insufficient Quantity.");
+        console.log("Insufficient Quantity.\n");
         mainOrBuy();
       }
     });
@@ -285,7 +280,7 @@ function updateSales(sale, productID, productName) {
 function renderProducts(data) {
   var table = new Table({
     head: ['ID', 'Product', 'Description', 'Price', 'Quantity', 'Department'],
-    colWidths: [6, 30, 55, 10, 10, 25]
+    colWidths: [8, 30, 55, 13, 8, 23]
   });
   for (var i = 0; i < data.length; i++) {
     var price = "$" + data[i].price.toFixed(2);
