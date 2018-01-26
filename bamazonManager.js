@@ -2,6 +2,7 @@ require("dotenv").config();
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 var keys = require("./keys.js");
+var Table = require("cli-table");
 
 // create the connection information for the sql database
 var connection = mysql.createConnection(
@@ -199,13 +200,16 @@ function addNewProduct() {
 }
 
 function renderProducts(data) {
+  var table = new Table({
+    head: ['ID', 'Product', 'Description', 'Price', 'Quantity', 'Department'],
+    colWidths: [6, 30, 55, 10, 10, 25]
+  });
   for (var i = 0; i < data.length; i++) {
-    console.log("\nID: " + data[i].item_id + ": " + data[i].product_name + ", Price: $" +
-                  data[i].price.toFixed(2) + ", Quantity: " + data[i].stock_quantity);
-    console.log("  -Description: " + data[i].description);
-    console.log("  -Found in " + data[i].department_name);
+    var price = "$" + data[i].price.toFixed(2);
+    table.push([data[i].item_id, data[i].product_name, data[i].description, price,
+      data[i].stock_quantity, data[i].department_name]);
   }
-  console.log("\n");
+  console.log(table.toString());
 }
 
 listProductIds();

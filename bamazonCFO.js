@@ -4,11 +4,6 @@ var inquirer = require("inquirer");
 var keys = require("./keys.js");
 var Table = require("cli-table");
 
-var table = new Table({
-    head: ['ID', 'Department', 'Overhead Costs', 'Sales', 'Total Profit']
-  , colWidths: [10, 30, 20, 20, 20]
-});
-
 // create the connection information for the sql database
 var connection = mysql.createConnection(
 	keys.mysqlKeys
@@ -118,11 +113,16 @@ function newDepartment() {
 }
 
 function renderSales(data) {
+  var table = new Table({
+    head: ['ID', 'Department', 'Overhead Costs', 'Sales', 'Total Profit'],
+    colWidths: [10, 30, 20, 20, 20]
+  });
   for (var i = 0; i < data.length; i++) {
     var profit = data[i].Sales.toFixed(2) - data[i]["Overhead Costs"].toFixed(2);
-    table.push([data[i].ID, data[i].Department, data[i]["Overhead Costs"], data[i].Sales.toFixed(2), profit.toFixed(2)]);
-    // console.log("ID: " + data[i].ID + " | Department: " + data[i].Department + " | Overhead Costs: " +
-                // data[i]["Overhead Costs"] + " | Sales: " + data[i].Sales.toFixed(2) + " | Total Profit: " + profit.toFixed(2));
+    profit = "$" + profit.toFixed(2);
+    var sales = "$" + data[i].Sales.toFixed(2);
+    table.push([data[i].ID, data[i].Department, data[i]["Overhead Costs"], sales,
+                profit]);
   }
   console.log(table.toString());
 }
