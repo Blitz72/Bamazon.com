@@ -6,7 +6,7 @@ VALUES ("Flysky FS-i6X", "6 channel RC transmitter.", "Toys/Hobbies", 54.95, 100
 	("Barbie Dream House", "A luxurious home for your Barbie dolls.", "Toys/Hobbies", 99.95, 3),
 	("Dell laptop", "15.4 inch, 4GB RAM, 1TB hard drive.", "Electronics", 695.00, 25),
 	("Bamazon Icecube", "Take over the world with one device.", "Electronics", 1000000.00, 1),
-	("MP3 Player", "Portable MP3 player, comes on 6 colors.", "Electronics", 14.99, 125),
+	("MP3 Player", "Portable MP3 player, comes in 6 colors.", "Electronics", 14.99, 125),
 	("Polo Shirt", "Men's Polo in various colors and sizes.", "Men's Clothing", 14.29, 75),
 	("Thoroughgood Work Boots", "All leather, union-made work boots.", "Men's Clothing", 225.79, 12),
 	("Khakis", "Comfortable khaki pants by Dockers.", "Men's Clothing", 24.99, 100),

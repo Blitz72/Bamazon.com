@@ -1,3 +1,5 @@
+USE bamazonDB;
+
 INSERT INTO departments (department_name, over_head_costs)
 VALUES ("Toys/Hobbies", 8367),
 	("Electronics", 12826),

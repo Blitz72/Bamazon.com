@@ -11,8 +11,18 @@ var table = new Table({
 
 // create the connection information for the sql database
 var connection = mysql.createConnection(
-	keys.mysqlKeys
-  );
+  keys.mysqlKeys
+);
+
+connection.connect(function(err) {
+  if (err) {
+    console.error('error connecting: ' + err.stack);
+    return;
+  }
+ 
+  console.log('connected as id ' + connection.threadId);
+});
+// console.log(connection);
 
 // var departments = ["Toys/Hobbies", "Electronics", "Outdoors", "Men's Clothing", "Women's Clothing",
 //                     "Industrial/Scientific", "Kindling Books"];
@@ -24,12 +34,12 @@ function listDepartments() {
   connection.query("SELECT department_name FROM departments", function(err, res) {
     if (err) throw err;
     for (var i = 0; i < res.length; i++) {
-      // console.log(res[i].department_name)
+      console.log(res[i].department_name)
       depts.push(res[i].department_name);
     }
     // console.log("depts: ", depts);
   });
-  console.log("depts: ", depts);
+  // console.log("depts: ", depts);
 }
 
 function listProductIds() {
@@ -39,9 +49,8 @@ function listProductIds() {
       // console.log(res[i].department_name)
       prods.push(res[i].item_id);
     }
-    // console.log("depts: ", depts);
   });
-  // console.log("depts: ", depts);
+  console.log("Product ID's: ", prods);
 }
 
 function mainMenu() {
@@ -204,6 +213,7 @@ function buyProduct() {
     name: "productID",
     validate: function(input) {
       var done = this.async();
+      console.log("\ninput: ", input);
       if (prods.indexOf(parseInt(input)) < 0) {
         done("Please enter a valid product ID.");
         return;
