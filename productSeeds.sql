@@ -21,4 +21,4 @@ VALUES ("Flysky FS-i6X", "6 channel RC transmitter.", "Toys/Hobbies", 54.95, 100
 	("Digital Multimeter", "Multi-function DMM with 4-1/2 digit display.", "Industrial/Scientific", 99.99, 15),
 	("Programming for 'Dummies'", "Fascinating read by David Bauer. 160pp.", "Kindling Books", 4.60, 1000), -- Can't give these things away!
 	("Importance of Early Childhood Literacy", "By Dr. Christina Bauer. 228pp.", "Kindling Books", 9.99, 13),
-	("The Complete Star Wars Universe", "Everything Star Wars is in here! 1276pp.", "Kindling Books", 48.72, 50);
+	("The Complete Star Wars Universe", "Everything Star Wars is in here! 1138pp.", "Kindling Books", 48.72, 50);

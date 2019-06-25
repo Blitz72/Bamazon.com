@@ -20,7 +20,7 @@ connection.connect(function(err) {
     return;
   }
  
-  console.log('connected as id ' + connection.threadId);
+  console.log('\n\nconnected as id ' + connection.threadId);
 });
 // console.log(connection);
 
@@ -34,7 +34,7 @@ function listDepartments() {
   connection.query("SELECT department_name FROM departments", function(err, res) {
     if (err) throw err;
     for (var i = 0; i < res.length; i++) {
-      console.log(res[i].department_name)
+      // console.log(res[i].department_name)
       depts.push(res[i].department_name);
     }
     // console.log("depts: ", depts);
@@ -50,7 +50,7 @@ function listProductIds() {
       prods.push(res[i].item_id);
     }
   });
-  console.log("Product ID's: ", prods);
+  // console.log("Product ID's: ", prods);
 }
 
 function mainMenu() {
